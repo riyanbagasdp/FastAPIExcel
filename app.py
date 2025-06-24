@@ -243,12 +243,23 @@ def index():
         save_path = os.path.join(UPLOAD_FOLDER, file.filename)
         file.save(save_path)
 
-        output_pdf = f"Slip_Gaji_{bulan}_{tahun}.pdf"
-        generate_pdf(bulan, tahun, save_path, output_pdf)
+        output_pdf = os.path.join("downloads", f"Slip_Gaji_{bulan}_{tahun}.pdf")
+        os.makedirs("downloads", exist_ok=True)
+
+        try:
+            generate_pdf(bulan, tahun, save_path, output_pdf)
+            print(f"✅ PDF berhasil digenerate: {output_pdf}")
+        except Exception as e:
+            print(f"❌ Gagal generate PDF: {e}")
+            return f"Gagal generate PDF: {e}"
+
+        if not os.path.exists(output_pdf):
+            return "❌ PDF tidak ditemukan."
 
         return send_file(output_pdf, as_attachment=True)
 
     return render_template('index.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True)
