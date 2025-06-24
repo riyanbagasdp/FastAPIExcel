@@ -64,10 +64,10 @@ def make_logo_box():
     data = [
         [''],
         [''],
-        [''],
         [Image(LOGO_PATH3, width=1 * cm, height=1 * cm)],
         [''],
         ['KANTOR PERWAKILAN BANK INDONESIA SOLO'],
+        ['Jl. Jend. Sudirman No.15, Kp. Baru, Kec. Ps. Kliwon, Kota Surakarta, Jawa Tengah 57111'],
         [''],
         [''],
     ]
@@ -77,6 +77,7 @@ def make_logo_box():
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
         ('FONTNAME', (0, 0), (-1, -1), 'Helvetica-Bold'),
         ('FONTSIZE', (0, 0), (-1, -1), 8),
+        ('FONTSIZE', (0, 5), (0, 5), 4),
         ('BOX', (0, 0), (-1, -1), 0.5, colors.black),
     ]))
     return table
