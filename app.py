@@ -13,7 +13,6 @@ UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 LOGO_PATH = "static/logo_bi.jpg"
-LOGO_PATH2 = "static/logo_bi.png"
 LOGO_PATH3 = "static/logo.jpg"
 WATERMARK_PATH = "static/private.png"
 
@@ -36,7 +35,7 @@ def make_cover(nama, nip, periode):
         nip = "(NIP TIDAK VALID)"
 
     data = [
-        [Image(LOGO_PATH, width=1.6*cm, height=1*cm)],
+        [Image(LOGO_PATH, width=2.3*cm, height=1.4*cm)],
         ['DATA RINCIAN POTONGAN LAIN-LAIN PADA SLIP GAJI PEGAWAI'],
         [f'BULAN : {periode}'],
         [''],
@@ -44,12 +43,12 @@ def make_cover(nama, nip, periode):
         [f'NIP : {nip}'],
         [''],
     ]
-    table = Table(data, colWidths=[10 * cm])
+    table = Table(data, colWidths=[12 * cm])
     table.setStyle(TableStyle([
         ('SPAN', (0, 0), (-1, 0)),
         ('SPAN', (0, 1), (-1, 1)),
         ('SPAN', (0, 2), (-1, 2)),
-        ('FONTNAME', (0, 0), (-1, -1), 'Helvetica'),
+        ('FONTNAME', (0, 0), (-1, -1), 'Helvetica-Bold'),
         ('FONTSIZE', (0, 0), (-1, -1), 8),
         ('ALIGN', (0, 0), (-1, 2), 'CENTER'),
         ('ALIGN', (0, 3), (-1, 3), 'CENTER'),
@@ -57,25 +56,27 @@ def make_cover(nama, nip, periode):
         ('FONTNAME', (0, 4), (-1, 5), 'Helvetica-Bold'),
         ('FONTSIZE', (0, 4), (-1, 5), 12),
         ('BOX', (0, 0), (-1, -1), 0.75, colors.black),
-        ('GRID', (0, 0), (-1, -1), 0.25, colors.white),
         ('BOTTOMPADDING', (0, 0), (-1, -1), 4),
     ]))
-    return table
+    return TableWithWatermark (table, WATERMARK_PATH)
 
 def make_logo_box():
     data = [
         [''],
         [''],
         [''],
-        [Image(LOGO_PATH3, width=1.2*cm, height=1.2*cm)],
+        [Image(LOGO_PATH3, width=1 * cm, height=1 * cm)],
         [''],
+        ['KANTOR PERWAKILAN BANK INDONESIA SOLO'],
         [''],
         [''],
     ]
-    table = Table(data, colWidths=[10 * cm])
+    table = Table(data, colWidths=[12 * cm])
     table.setStyle(TableStyle([
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+        ('FONTNAME', (0, 0), (-1, -1), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, -1), 8),
         ('BOX', (0, 0), (-1, -1), 0.5, colors.black),
     ]))
     return table
@@ -107,7 +108,7 @@ class TableWithWatermark(Flowable):
 
 def make_detail(nama, nip, pipebi, ipebi, kopebi, zistabungan, pot, jumlah, periode):
     content_table_data = [
-        [Image(LOGO_PATH2, width=3.2*cm, height=1.0*cm), ''],
+        ['', ''],
         ['DATA RINCIAN POTONGAN LAIN-LAIN PADA SLIP GAJI PEGAWAI', ''],
         ['KANTOR PERWAKILAN BANK INDONESIA SOLO', ''],
         ['', ''],
@@ -125,26 +126,25 @@ def make_detail(nama, nip, pipebi, ipebi, kopebi, zistabungan, pot, jumlah, peri
         ['', '']
     ]
 
-    content_table = Table(content_table_data, colWidths=[5.5 * cm, 4.5 * cm])
+    content_table = Table(content_table_data, colWidths=[6 * cm, 6 * cm])
     content_table.setStyle(TableStyle([
         ('SPAN', (0, 0), (1, 0)),
         ('SPAN', (0, 1), (1, 1)),
         ('SPAN', (0, 2), (1, 2)),
         ('FONTNAME', (0, 0), (-1, -1), 'Helvetica'),
-        ('FONTSIZE', (0, 0), (-1, -1), 5),
-        ('LEADING', (0, 0), (-1, -1), 6),
+        ('FONTSIZE', (0, 0), (-1, -1), 8),
+        ('LEADING', (0, 0), (-1, -1), 8),
         ('BOTTOMPADDING', (0, 0), (-1, -1), 1),
         ('TOPPADDING', (0, 0), (-1, -1), 1),
         ('ALIGN', (0, 0), (1, 2), 'CENTER'),
         ('ALIGN', (0, 3), (1, 5), 'LEFT'),
         ('ALIGN', (0, 7), (-1, -1), 'LEFT'),
-        ('LEFTPADDING', (0, 3), (0, 6), 50),
-        ('LEFTPADDING', (0, 7), (0, 13), 60),
-        ('LEFTPADDING', (0, 14), (0, 15), 70),
+        ('LEFTPADDING', (0, 3), (0, 6), 35),
+        ('LEFTPADDING', (0, 7), (0, 13), 45),
+        ('LEFTPADDING', (0, 14), (-1, 15), 50),
         ('FONTNAME', (0, 1), (-1, 2), 'Helvetica-Bold'),
-        ('FONTSIZE', (0, 1), (-1, 2), 6),
+        ('FONTSIZE', (0, 1), (-1, 2), 9),
         ('BOX', (0, 0), (-1, -1), 0.5, colors.black),
-        ('GRID', (0, 7), (-1, -1), 0.25, colors.white)
     ]))
 
     return TableWithWatermark(content_table, WATERMARK_PATH)
