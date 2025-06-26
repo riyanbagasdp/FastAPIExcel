@@ -328,7 +328,7 @@ def generate_pdf_single(bulan, tahun, file_path, sender_email, sender_password):
             send_email_with_buffer(
                 to_email=row["EMAIL"],
                 subject=f"Slip Gaji Anda - {periode}",
-                body=f"Yth. {row['NAMA']},\n\nBerikut terlampir slip gaji Anda.\n\nSalam,\nUnit Management Intern Kantor Perwakilan Bank Indonesia Solo",
+                body=f"Yth. {row['NAMA']},\n\nBerikut terlampir potongan lain slip gaji Anda.\n\nSalam,\nUnit Management Intern \nKantor Perwakilan Bank Indonesia Solo",
                 pdf_buffer=buffer,
                 filename=filename,
                 sender_email=sender_email,
