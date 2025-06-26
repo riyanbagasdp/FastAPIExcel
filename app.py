@@ -364,27 +364,32 @@ def index():
         action = request.form.get('action')
 
         if not bulan or not tahun or not file:
-            return "Mohon lengkapi bulan, tahun, dan file."
+            return "❌ Mohon lengkapi bulan, tahun, dan file."
 
-        # Baca file Excel langsung ke memori
+        # Baca file Excel ke memori
         excel_file = BytesIO(file.read())
 
+        # Ambil variabel lingkungan (dari .env jika lokal, dari Railway jika hosting)
+        if os.environ.get("RAILWAY_STATIC_URL") is None:
+            from dotenv import load_dotenv
+            load_dotenv()
+
+        sender_email = os.getenv("EMAIL_SENDER")
+        sender_password = os.getenv("EMAIL_PASSWORD")
+
+        if not sender_email or not sender_password:
+            return "❌ Email pengirim belum dikonfigurasi di .env atau environment hosting"
+
+        # === Kirim slip satu per satu ke email masing-masing
         if action == "single":
             try:
-                load_dotenv()
-                sender_email = os.getenv("EMAIL_SENDER")
-                sender_password = os.getenv("EMAIL_PASSWORD")
-
-                if not sender_email or not sender_password:
-                    return "❌ Email pengirim belum dikonfigurasi di .env atau environment hosting"
-
                 generate_pdf_single(bulan, tahun, excel_file, sender_email, sender_password)
                 return "✅ Slip berhasil dikirim ke email masing-masing karyawan!"
-            
             except Exception as e:
                 return f"❌ Gagal mengirim email: {e}"
 
-        else:  # Gabungan dalam 1 file PDF untuk diunduh
+        # === Gabungkan semua slip dalam satu file PDF untuk diunduh
+        else:
             try:
                 output_buffer = BytesIO()
                 generate_pdf(bulan, tahun, excel_file, output_buffer)
