@@ -371,6 +371,7 @@ def index():
 
         # Hanya load .env jika tidak di-hosting (berarti sedang dijalankan lokal)
         if os.environ.get("RAILWAY_STATIC_URL") is None:
+            from dotenv import load_dotenv
             load_dotenv()
 
         # Ambil nilai variabel dari environment
