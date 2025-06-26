@@ -19,13 +19,12 @@
     </style>
 </head>
 <body class="bg-light">
-
-    
     <div class="container mt-5">
         <div class="card shadow p-4">
             <!-- Logo Kiri Atas -->
             <img src="{{ url_for('static', filename='logo_bi.png') }}" alt="Logo BI" class="header-logo">
             <h2 class="text-center mb-4">📄 Slip Gaji Generator</h2>
+
             <form method="POST" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="bulan" class="form-label">Bulan</label>
@@ -40,16 +39,30 @@
                     <input class="form-control" type="file" id="file" name="file" accept=".xls,.xlsx" required>
                 </div>
                 <div class="d-grid">
-                    <button type="submit" class="btn btn-primary">Buat PDF</button>
+                    <button type="submit" class="btn btn-primary" name="action" value="duo">Buat PDF (2 Pegawai/Halaman)</button>
+                </div>
+                <div class="d-grid mt-2">
+                    <button type="submit" class="btn btn-success" name="action" value="single">Buat PDF (1 Pegawai = 1 File) & Langsung kirim email</button>
                 </div>
             </form>
+
+            {% if files %}
+            <hr>
+            <h5 class="mt-4">✅ File PDF yang berhasil dibuat:</h5>
+            <ul class="list-group">
+                {% for f in files %}
+                <li class="list-group-item">
+                    <a href="{{ url_for('static', filename='../' + f) }}" download>{{ f.split('/')[-1] }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+
             <!-- Footer -->
-            <div class="footer">
+            <div class="footer mt-4">
                 © Kantor Perwakilan Bank Indonesia Solo 2025
             </div>
         </div>
-
     </div>
-
 </body>
 </html>
