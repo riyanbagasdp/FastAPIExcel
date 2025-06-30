@@ -300,6 +300,18 @@ def generate_pdf_single(bulan, tahun, file_path, sender_email, sender_password):
     df["JUMLAH"] = df[pot_cols].sum(axis=1)
 
     for _, row in df.iterrows():
+        if not row["NAMA"] or row["NAMA"].strip().upper() in ["", "0", "NONE", "(NAMA TIDAK VALID)"]:
+            print(f"⏭️ Lewati: Nama tidak valid: {row['NAMA']}")
+            continue
+        try:
+            nip_test = int(float(row["NIP"]))
+            if nip_test == 0:
+                print(f"⏭️ Lewati: NIP tidak valid: {row['NIP']}")
+                continue
+        except:
+            print(f"⏭️ Lewati: NIP tidak bisa dikonversi: {row['NIP']}")
+            continue
+
         buffer = BytesIO()
         doc = SimpleDocTemplate(buffer, pagesize=landscape(A4),
                                 leftMargin=1.5 * cm, rightMargin=1.5 * cm,
@@ -327,8 +339,8 @@ def generate_pdf_single(bulan, tahun, file_path, sender_email, sender_password):
         try:
             send_email_with_buffer(
                 to_email=row["EMAIL"],
-                subject=f"Slip Gaji Anda - {periode}",
-                body=f"Yth. {row['NAMA']},\n\nBerikut terlampir potongan lain slip gaji Anda.\n\nSalam,\nUnit Management Intern \nKantor Perwakilan Bank Indonesia Solo",
+                subject=f"Potongan Lain Gaji - {periode}",
+                body=f"Yth. Bapak/Ibu {row['NAMA']},\n\nBerikut terlampir potongan lain slip gaji Anda.\n\nSalam,\nUnit Management Intern \nKantor Perwakilan Bank Indonesia Solo",
                 pdf_buffer=buffer,
                 filename=filename,
                 sender_email=sender_email,
